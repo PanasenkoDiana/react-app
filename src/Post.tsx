@@ -4,7 +4,7 @@ function Post(props: { title: string; description: string; imageUrl: string; aut
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
 
-    const likeClicked = () => {
+    const isLiked = () => {
         setLikes(likes + 1);
         setLiked(true);
     };
@@ -16,7 +16,7 @@ function Post(props: { title: string; description: string; imageUrl: string; aut
             <img src={props.imageUrl} alt={props.title} />
             <h2>Автор: {props.author}</h2>
             <p>Лайки: {likes}</p>
-            <button onClick={likeClicked} disabled={liked}>
+            <button onClick={isLiked} disabled={liked}>
                 {liked ? 'Лайк поставлен' : 'Лайк'}
             </button>
             <hr />
