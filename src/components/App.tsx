@@ -1,7 +1,9 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
 import { PostList } from './PostList/PostList';
-import { Header } from './Header/Header'; 
-import { Footer } from './Footer/Footer';
+import { PostPage } from './PostPage/PostPage';
+import { Main } from './Main/Main';
 
 export function App() {
     const posts = [
@@ -128,10 +130,15 @@ export function App() {
     ];
 
     return (
-        <div>
-            <Header />
-            <PostList posts={posts} />
-            <Footer />
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Main />} />
+                    <Route path="posts" element={<PostList posts={posts} />} />
+                    <Route path="post/:id" element={<PostPage posts={posts} />} />
+                </Route>
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </Router>
     );
 }

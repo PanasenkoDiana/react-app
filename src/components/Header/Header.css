@@ -85,3 +85,20 @@ body, html {
   justify-content: space-between;
   align-items: center;
 }
+
+a {
+  text-decoration: none;
+  color: inherit; 
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-posts {
+  font-size: 23px;
+  font-style: normal;
+  font-weight: bold;
+}
+

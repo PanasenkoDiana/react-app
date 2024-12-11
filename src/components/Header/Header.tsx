@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 export function Header() {
@@ -6,10 +7,20 @@ export function Header() {
     <header className="header">
       <div className="header-container">
         <div className="header-left">
+
           <div className="header-home">
             <i className="home-icon"></i>
-            <span>Home</span>
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
           </div>
+
+          <div className="header-posts">
+            <Link to="/posts" className="nav-link">
+              Посты
+            </Link>
+          </div>
+
           <div className="header-search">
             <i className="search-icon"></i>
             <input
@@ -18,6 +29,7 @@ export function Header() {
               className="search-input"
             />
           </div>
+          
         </div>
 
         <div className="header-profile">
