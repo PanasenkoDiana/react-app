@@ -29,6 +29,15 @@ export function PostList({ posts }: PostListProps) {
         }
     }, [selectedCategory, posts]);
 
+    useEffect(()=>{
+        async function getPosts(){
+            const response = await fetch('https://fakestoreapi.com/products')
+            const products = await response.json()
+            setFilteredPosts(products)
+        }
+        getPosts()
+    },[])
+
     return (
         <div>
             <div className="category-filter">
