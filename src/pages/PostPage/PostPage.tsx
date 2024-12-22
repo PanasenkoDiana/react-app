@@ -1,12 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { usePostById } from '../../hooks/usePostById';
 import './PostPage.css';
 
-export function PostPage({ posts }: { posts: any[] }) {
+export function PostPage() {
     const { id } = useParams();
-    const post = posts.find(p => p.id === parseInt(id!));
+    const { post, isLoading, error } = usePostById(Number(id));
 
-    if (!post) return <div>Пост не найден</div>;
+    if (isLoading) {
+        return <div>Загрузка поста...</div>;
+    }
+
+    if (error) {
+        return <div>Ошибка: {error}</div>;
+    }
+
+    if (!post) {
+        return <div>Пост не найден</div>;
+    }
 
     return (
         <div className="main-container">
@@ -14,7 +25,7 @@ export function PostPage({ posts }: { posts: any[] }) {
                 <h1 className="post-title">{post.title}</h1>
                 <p className="post-description">{post.description}</p>
                 <p className="post-author"><strong>Автор:</strong> {post.author}</p>
-                <p className="post-date"><strong>Дата:</strong> {post.date}</p>
+                <p className="post-date"><strong>Дата:</strong> {new Date(post.date).toLocaleDateString()}</p>
                 <p className="post-category"><strong>Категория:</strong> {post.category}</p>
             </div>
         </div>

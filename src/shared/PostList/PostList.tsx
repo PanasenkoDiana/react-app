@@ -1,42 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { Post } from '../Post/Post';
+import React, { useState } from 'react';
+import { Post } from './PostCard';
+import { usePosts } from '../../hooks/usePosts';
 import './PostList.css';
 
-type PostType = {
+interface IPost {
     id: number;
     title: string;
     description: string;
     category: string;
     author: string;
     date: string;
-};
+}
 
-type PostListProps = {
-    posts: PostType[];
-};
 
 const categories = ['Все', 'Маркетинг', 'Программирование', 'Котики', 'Фильмы'];
 
-export function PostList({ posts }: PostListProps) {
-    const [selectedCategory, setSelectedCategory] = useState('Все');
-    const [filteredPosts, setFilteredPosts] = useState(posts);
+export function PostList() {
+    const { posts, isLoading, error } = usePosts();
+    const [selectedCategory, setSelectedCategory] = useState<string>('Все');
 
-    useEffect(() => {
-        if (selectedCategory === 'Все') {
-            setFilteredPosts(posts);
-        } else {
-            setFilteredPosts(posts.filter((post) => post.category === selectedCategory));
-        }
-    }, [selectedCategory, posts]);
+    const filteredPosts = selectedCategory === 'Все'
+        ? posts
+        : posts.filter((post: IPost) => post.category === selectedCategory);
 
-    useEffect(()=>{
-        async function getPosts(){
-            const response = await fetch('https://fakestoreapi.com/products')
-            const products = await response.json()
-            setFilteredPosts(products)
-        }
-        getPosts()
-    },[])
+    if (isLoading) {
+        return <div>Loading posts...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div>
@@ -51,7 +44,7 @@ export function PostList({ posts }: PostListProps) {
             </div>
 
             <div className="post-list">
-                {filteredPosts.map((post) => (
+                {filteredPosts.map((post: IPost) => (
                     <Post
                         key={post.id}
                         title={post.title}

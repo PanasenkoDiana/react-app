@@ -1,9 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from './Layout/Layout';
-import { PostList } from './PostList/PostList';
-import { PostPage } from './PostPage/PostPage';
-import { Main } from './Main/Main';
+import { Layout } from '../shared/Layout/Layout';
+import { PostList } from '../shared/PostList/PostList';
+import { PostPage } from '../pages/PostPage/PostPage';
+import { Main } from '../shared/Main/Main';
+
+interface IPost {
+    id: number;
+    title: string;
+    description: string;
+    category: string;
+    author: string;
+    date: string;
+}
 
 export function App() {
     const posts = [
@@ -134,8 +143,26 @@ export function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Main />} />
-                    <Route path="posts" element={<PostList posts={posts} />} />
-                    <Route path="post/:id" element={<PostPage posts={posts} />} />
+                    <Route
+                        path="posts"
+                        element={
+                            posts.length > 0 ? (
+                                <PostList posts={posts} />
+                            ) : (
+                                <div>Нет доступных постов</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="post/:id"
+                        element={
+                            posts.length > 0 ? (
+                                <PostPage posts={posts} />
+                            ) : (
+                                <div>Загрузка данных...</div>
+                            )
+                        }
+                    />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
