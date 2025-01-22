@@ -3,9 +3,24 @@ import { useParams } from 'react-router-dom';
 import { usePostById } from '../../hooks/usePostById';
 import './PostPage.css';
 
+interface IPost {
+    id: number;
+    title: string;
+    description: string;
+    category: string;
+    author: string;
+    date: string;
+}
+
+interface UsePostByIdResponse {
+    post: IPost | null;
+    isLoading: boolean;
+    error: string | null;
+}
+
 export function PostPage() {
     const { id } = useParams();
-    const { post, isLoading, error } = usePostById(Number(id));
+    const { post, isLoading, error }: UsePostByIdResponse = usePostById(Number(id));
 
     if (isLoading) {
         return <div>Загрузка поста...</div>;
