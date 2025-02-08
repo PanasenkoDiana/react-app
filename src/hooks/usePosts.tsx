@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
-interface IPost {
+export interface IPost {
     id: number;
     title: string;
     description: string;
@@ -11,33 +11,33 @@ interface IPost {
 
 export function usePosts() {
     const [posts, setPosts] = useState<IPost[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchPosts() {
-            setIsLoading(true);
-            setError(null);
             try {
-                const response = await fetch('https://fakestoreapi.com/products');
+                setIsLoading(true);
+                const response = await fetch("https://dev.to/api/articles");
                 if (!response.ok) {
-                    throw new Error('Failed to fetch posts');
+                    throw new Error("Failed to fetch posts");
                 }
                 const data = await response.json();
 
-                // Преобразуем данные из API в структуру интерфейса IPost
-                const formattedPosts: IPost[] = data.map((product: any) => ({
-                    id: product.id,
-                    title: product.title,
-                    description: product.description,
-                    category: 'Uncategorized',
-                    author: 'Unknown',
-                    date: new Date().toISOString(),
+                console.log(data);
+
+                const formattedPosts: IPost[] = data.map((post: any) => ({
+                    id: post.id,
+                    title: post.title,
+                    description: post.body,
+                    category: post.tag_list.join(", ") || "General",
+                    author: `User ${post.user_id}`,
+                    date: new Date(post.published_at).toLocaleDateString(),
                 }));
 
                 setPosts(formattedPosts);
-            } catch (err: any) {
-                setError(err.message || 'An error occurred');
+            } catch (error: any) {
+                setError(error.message || "An error occurred");
             } finally {
                 setIsLoading(false);
             }
